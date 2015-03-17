@@ -23,7 +23,6 @@ func (s slack) Push(e *webhook.PushEvent) {
 	text := url.QueryEscape(fmt.Sprintf("test"))
 
 	fmt.Println(text)
-
 	if _, err := http.Get(fmt.Sprintf(format, *token, *channel, text)); err != nil {
 		log.Println(err)
 	}
