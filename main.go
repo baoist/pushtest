@@ -3,10 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/rjeczalik/gh/webhook"
 	"log"
 	"net/http"
 	"net/url"
+
+	"github.com/rjeczalik/gh/webhook"
 )
 
 var (
@@ -29,5 +30,6 @@ func (s slack) Push(e *webhook.PushEvent) {
 func main() {
 	flag.Parse()
 	fmt.Println("Secret: ", *secret, "Token:", *token, "Channel:", *channel)
+
 	log.Fatal(http.ListenAndServe(":8080", webhook.New(*secret, slack{})))
 }
