@@ -21,7 +21,7 @@ type slack struct{}
 func (s slack) Push(e *webhook.PushEvent) {
 	const format = "https://slack.com/api/chat.postMessage?token=%s&channel=%s&text=%s"
 	text := url.QueryEscape(fmt.Sprintf("%s pushed to %s", e.Pusher.Email, e.Repository.Name))
-	fmt.Println(e.Repository)
+	fmt.Println(e.Repository.Url)
 
 	if _, err := http.Get(fmt.Sprintf(format, *token, *channel, text)); err != nil {
 		log.Println(err)
