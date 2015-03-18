@@ -34,7 +34,16 @@ func (s slack) Push(e *webhook.PushEvent) {
 }
 
 func (s slack) PullRequest(e *webhook.PullRequestEvent) {
-	message := fmt.Sprintf("new pull request at %s", e.PullRequest.URL)
+	var message string
+
+	switch e.Action {
+	case "opened":
+		message = fmt.Sprintf("[%s] opened a new pull request <%s|>", e.PullRequest.Head.Repo.FullName, e.PullRequest.HTMLURL)
+	case "closed":
+		message = fmt.Sprintf("[%s] closed a new pull request <%s|>", e.PullRequest.Head.Repo.FullName, e.PullRequest.HTMLURL)
+	default:
+		message = fmt.Sprintf("[%s] new action (%s) on pull request <%s|>", e.PullRequest.Head.Repo.FullName, e.Action, e.PullRequest.HTMLURL)
+	}
 
 	_, err := http.Get(s.queryURL(message))
 	if err != nil {
